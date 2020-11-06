@@ -14,10 +14,6 @@
 (def app-dom-root
   (js/document.getElementById "app"))
 
-(defn ^:export run []
-  (js/console.log "Running!")
-  (rdom/render [simple-example-component] app-dom-root))
-
-(defn ^:dev/after-load start []
-  (js/console.log "Starting!")
+(defn ^:export ^:dev/after-load run []
+  (js/console.log "Run Called!")
   (rdom/render [simple-example-component] app-dom-root))

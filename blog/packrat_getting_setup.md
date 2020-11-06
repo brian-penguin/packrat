@@ -102,7 +102,7 @@ Lets take a quick example and add it to our core.cljs file!
 
 In our namespace we are requiring the reagent.core and reagent dom so we can generate our html into the dom. We then define a method that returns our bold-greeting component.This we use in our simple-example-component to say "Hello World"!
 
-At the bottom of this file we see a function called `run` this is what we pointed to in our `shadow-cljs.edn` config file for the module of our app. In it we are going to log that we are running and then render our componet!
+At the bottom of this file we see a function called `run` this is what we pointed to in our `shadow-cljs.edn` config file for the module of our app. In it we are going to log that we are running and then render our component! The `^:export` metadata at the beginning of the function tells ShadowCljs to "export" this function so that it can be called from the Javascript runtime.
 
 Now lets run our watch command to start up the application and file watching
 ```
@@ -123,14 +123,16 @@ Alright! We've got our build up and running so lets make a change to our bold-gr
 
 And Voila! Now we have an orange and less bold greeting. Switching back to our browser you may notice nothing has changed. The watch command has reloaded but nothing's changed on the web page. We can manually refresh the web page but personally it would be a huge bummer having to reload the page manually with every change in development. So lets add one more thing to make it a nice and smooth experience locally.
 
-We can add to our `core.cljs` file this function:
+We can update our run function in our `core.cljs` file with this bit of metadata for ShadowCljs: `^:dev/after-load`
 ```clj
-(defn ^:dev/after-load start []
-  (js/console.log "Starting!")
+(defn ^:export ^:dev/after-load run []
+  (js/console.log "Run Called!")
   (rdom/render [simple-example-component] app-dom-root))
 ```
 
-Look familiar? It should it's almost exactly the same at the run function. This is one of those lifecycle hooks I mentioned earlier. This hook tells the ui to re-render our component after our code is reloaded. This way both the code that's running in our repl and on our server will match the ui! For more information on what's going on with the cljs code reloading checkout [this post](https://code.thheller.com/blog/shadow-cljs/2019/08/25/hot-reload-in-clojurescript.html) by thheller After adding that in lets save and make another change.
+This is one of those lifecycle hooks I mentioned earlier. This hook tells the ui to re-render our component after our code is reloaded. This way both the code that's running in our repl and on our server will match the ui! For more information on what's going on with the cljs code reloading checkout [this post](https://code.thheller.com/blog/shadow-cljs/2019/08/25/hot-reload-in-clojurescript.html) by thheller.
+
+Now lets make another change!
 
 ```clj
 (defn bold-greeting [message]
