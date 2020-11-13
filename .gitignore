@@ -1,4 +1,5 @@
 node_modules/
 public/scripts/cljs-runtime/
 public/scripts/core.js
+.shadow-cljs/
 .DS_Store
