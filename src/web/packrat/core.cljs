@@ -4,7 +4,7 @@
 
 (defn bold-greeting [message]
   [:h1
-   [:span {:style {:color "blue"}} message]])
+   [:span.text-3xl.text-pink-500 message]])
 
 (defn simple-example-component []
   [:div

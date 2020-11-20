@@ -1,5 +1,11 @@
 {
+  "scripts": {
+    "watch": "npx shadow-cljs watch app",
+    "css": "npx tailwind build -o public/styles.css",
+    "production-css": "NODE_ENV=production npx tailwind build -o public/styles.css"
+  },
   "dependencies": {
+    "postcss": "^8.1.8",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "shadow-cljs": "^2.11.7"
