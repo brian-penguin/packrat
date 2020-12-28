@@ -6,7 +6,7 @@
  We want to setup a quick layout that lets us act like power users for our inventory management. To do this we're going to take a look at loading some custom fonts, using a prebuilt spiritual successor to bootstrap called tailwind css, and some clojure-land specific markup syntax.
 
 ### Tailwind CSS
-[TailwindCSS](https://tailwindcss.com/)is a CSS framework based on utility classes. This means that instead of trying to handroll a lot of our own css classes and define styles for them, we choose from a whole lot of pre-written ones! This can be done by adding classes to your html which match the tailwind classes. For example
+[TailwindCSS](https://tailwindcss.com/) is a CSS framework based on utility classes. This means that instead of trying to handroll a lot of our own css classes and define styles for them, we choose from a whole lot of pre-written ones! This can be done by adding classes to your html which match the tailwind classes. For example
 
 ### Lets start!
 If you're at all like me you get very frustrated and discouraged if something doesn't work right when you're trying to set it up. Therefore I like to start with something that works. So lets get a basic layout to start! We're going to follow their process for installation from the Tailwind [Install Docs](https://tailwindcss.com/docs/installation#installing-tailwind-as-a-post-css-plugin)
@@ -31,7 +31,7 @@ Then we should init a config file using this command
 ```
 $ npx tailwindcss init
 ```
-This creates a new config file for use with the tailwindcss cli tool which should look like this.
+This creates a new config file called `./tailwind.config.js` for configuring the tailwindcss cli tool. The default config should look like this:
 ```
 module.exports = {
   purge: []
@@ -46,17 +46,18 @@ module.exports = {
 }
 ```
 
-Since we want to pre-process the css and shake out all the styles we don't use to minimize the amount of css we need to
-ship over the wire we can update the `purge` key to specify places where we will add our classes.
+Since we will want to pre-process the css and only keep the styles we use to minimize the amount of css we 
+send over the wire, we can update the `purge` key in our config to tell tailwind exactly where to look for our style classes. 
+This can be a regex or path.
 ```
 purge: [
   './src/**/*/cljs',
   './public/index.html'
 ]
 ```
-Under the hood tailwind is going to use a library called purgecss to look through those files for any matching class
-names using this regex t/[^<>"'`\s]*[^<>"'`\s:]/g . Now whenever we set the `production` value for `NODE_ENV` and build
-our css tailwind will remove anything we aren't using. This gives us a ton of flexibility in where our class names live and since
+Under the hood, tailwind is using a library called purgecss to look through the files matching our purge config key for any matching tailwind css class
+names using this regex ```t/[^<>"'`\s]*[^<>"'`\s:]/g ```. Now whenever we set the `production` value for `NODE_ENV` and run our tailwindcss build command,
+our css tailwind will remove any styles from our output styles.css file that we don't need. This gives us a ton of flexibility in where our class names live and since
 we are building our components in our code we can rest easy as long as we match the regex.
 
 Before we go any further we want to make sure this works! Lets update our hello to use some of these new tailwind
@@ -72,9 +73,9 @@ $ npx tailwindcss build -o public/styles.css
    📦 Size: 3.74MB
    💾 Saved to public/styles.css
 ```
-Two things you'll notice immediately; first that the whole of tailwind was installed at just under a whopping 3.8MBs and second that
-our former `bold-greeting` header is now the same size as our p tag. This is ok. We will use our purge to make sure we
-have a much more reasonably sized output. As for the text, Tailwind overrides all the default
+Two things you'll notice immediately; first that the whole of tailwind was installed at a whopping 3.8MBs and second that
+our former `bold-greeting` header is now the same size as our p tag. This is ok. We will use our tailwindcss purge tool to make sure we
+have a much smaller output. As for the text, Tailwind overrides all the default
 values for text so that we can set our own as we need. This is configurable in some file somewhere and if you're
 interested you should check out the themes configuration section of the tailwind docs.
 
@@ -109,9 +110,11 @@ $ NODE_ENV=production tailwind build -o public/style.css
    💾 Saved to public/style.css
 
 ```
-Only 10.67KB! A huge improvement. Unfortunately we are now unable to keep adding new styles to our app because we've
+Only 10.67KB! A huge improvement. 
+
+Unfortunately we are now unable to keep adding different styles to our app because we've
 deleted everything except the color pink and a 3xl text size. So we will have to rebuild without setting the NODE_ENV to
-production. For now I'm going to add this to our package.json as a script so I can run
+production. For now I'm going to add this to our package.json as a npm script so I can run
 ```
 $ npm run production-css
 ```
