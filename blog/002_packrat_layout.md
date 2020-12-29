@@ -1,6 +1,6 @@
 # Packrat
 
-### Layout and Styles
+## Layout and Styles
 
 ### The Goal
  We want to setup a quick layout that lets us act like power users for our inventory management. To do this we're going to take a look at loading some custom fonts, using a prebuilt spiritual successor to bootstrap called tailwind css, and some clojure-land specific markup syntax.
@@ -46,8 +46,8 @@ module.exports = {
 }
 ```
 
-Since we will want to pre-process the css and only keep the styles we use to minimize the amount of css we 
-send over the wire, we can update the `purge` key in our config to tell tailwind exactly where to look for our style classes. 
+Since we will want to pre-process the css and only keep the styles we use to minimize the amount of css we
+send over the wire, we can update the `purge` key in our config to tell tailwind exactly where to look for our style classes.
 This can be a regex or path.
 ```
 purge: [
@@ -110,7 +110,7 @@ $ NODE_ENV=production tailwind build -o public/style.css
    💾 Saved to public/style.css
 
 ```
-Only 10.67KB! A huge improvement. 
+Only 10.67KB! A huge improvement.
 
 Unfortunately we are now unable to keep adding different styles to our app because we've
 deleted everything except the color pink and a 3xl text size. So we will have to rebuild without setting the NODE_ENV to
