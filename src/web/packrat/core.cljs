@@ -19,7 +19,7 @@
               ;:description "I'm not sure I'm qualified to judge too many hats"}}))
 
 
-(defonce items (r/atom (sorted-map))
+(defonce items (r/atom (sorted-map)))
 ;; Keep track of ids of items in use
 (defonce counter (r/atom 0))
 
